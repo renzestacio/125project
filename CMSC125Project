@@ -1,0 +1,172 @@
+/*
+DELA ROSA, Ralph
+ESTACIO, Reneelou
+
+CMSC 125 Project: ICS-OS To-Do List Manager
+
+Notes:
+> 
+> 
+*/
+
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+#include<time.h>
+#define MAX_TASKS 10
+
+//Declaration of structure.
+typedef struct{
+  int TID;
+	char TNAME[30];
+	char TDESC[50];
+	int priority;
+//	int deadline[5];
+//	int day;
+//	int month;
+//	int year;
+}task;
+
+int displayArray[MAX_TASKS][5];
+
+//Declaration of function prototypes.
+void printMenu(int counter);
+int createNewTask(task tasks[MAX_TASKS], int counter);
+int viewTaskList(task tasks[MAX_TASKS], int counter);
+int deleteTask(task tasks[MAX_TASKS], int counter);
+
+main(){
+	int choice, counter = 0, count = 0;
+	task tasks[MAX_TASKS];
+
+	system("clear");
+
+	do{
+		printMenu(count);
+		printf("Enter choice: ");
+		scanf("%d", &choice);
+		switch(choice){
+			//Creates a new task. +1 per new task.
+			case 1:	system("clear");
+					printf("Create New Task");
+					putchar('\n');
+					count = createNewTask(tasks, count);
+					break;
+			case 2:	system("clear");
+					printf("View Task List");
+					putchar('\n');
+					viewTaskList(tasks, count);
+					break;
+			case 3:	printf("Edit Task");
+					break;
+			//Deletes an existing task. -1 per deleted task.
+			case 4:	system("clear");
+					printf("Delete Task");
+					putchar('\n');
+					count = deleteTask(tasks, count);
+					break;
+			case 5:	system("clear");
+					exit(0);
+					system("clear");
+					break;
+			default: system("clear");
+					break;
+		}
+	}while(choice != 5);
+}
+
+//Displays the program's menu.
+void printMenu(int counter){
+	printf("ICS-OS To-Do List Manager");
+	putchar('\n');
+	printf("[1] Create New Task");
+	putchar('\n');
+	printf("[2] View Task List (%d)", counter);
+	putchar('\n');
+	printf("[3] Edit Task");
+	putchar('\n');
+	printf("[4] Delete Task");
+	putchar('\n');
+	printf("[5] Exit");
+	putchar('\n');
+}
+
+//Creates a new task.
+int createNewTask(task tasks[MAX_TASKS], int counter){
+	counter++;
+	tasks[counter].TID = counter;
+	printf("Task name: ");
+	gets(tasks[counter].TNAME);
+	gets(tasks[counter].TNAME);
+	printf("Task description: ");
+	gets(tasks[counter].TDESC);
+	printf("Priority: ");
+	scanf("%d", &tasks[counter].priority);
+//	printf("Deadline: ");
+//	scanf("%d", &tasks[counter].deadline);
+
+	system("clear");
+	printf("New task created!\n");
+	sleep(1);
+	system("clear");
+	return counter;
+}
+
+//Displays the available tasks.
+int viewTaskList(task tasks[MAX_TASKS], int counter){
+	int iTask;
+
+	if(counter == 0){
+		printf("No task yet.\n");
+	}
+	else{
+		for(iTask = 0; iTask < counter; iTask++){
+/**
+Problem lies here.
+**/
+			if(tasks[iTask].TID != 0){
+//				iTask++;
+				printf("\nTask ID: %d\n", tasks[iTask+1].TID);
+				printf("Task Name: ");
+				puts(tasks[iTask+1].TNAME);
+				printf("Task Description: ");
+				puts(tasks[iTask+1].TDESC);
+				printf("Task Priority: %d\n", tasks[iTask+1].priority);
+	//			printf("\nTask Deadline: %d\n", tasks[iTask++].deadline);
+			}
+		}
+	}
+
+	getchar();
+	getchar();
+	return 0;
+}
+
+//Deletes an existing task.
+int deleteTask(task tasks[MAX_TASKS], int counter){
+	int iTask, deleteTID;
+
+	counter--;
+
+	if(counter == 0){
+		printf("No task to be deleted.\n");
+	}
+	else{
+		printf("Enter Task ID (TID): ");
+		scanf("%d", &deleteTID);
+		for(iTask = 0; iTask < counter; iTask++){
+			if(deleteTID == tasks[iTask+1].TID){
+				tasks[iTask+1].TID = 0;
+				memset(tasks[iTask+1].TNAME, 0, sizeof tasks[iTask+1].TNAME);
+				memset(tasks[iTask+1].TDESC, 0, sizeof tasks[iTask+1].TDESC);
+				tasks[iTask+1].priority = 0;
+			}
+		}
+	}
+
+	system("clear");
+	printf("Task deleted!\n");
+	sleep(1);
+	system("clear");
+	return counter;
+}
