@@ -12,11 +12,12 @@ Notes:
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
+#include<time.h>
 #define MAX_TASKS 10
 
 //Declaration of structure.
 typedef struct{
-  int TID;
+	int TID;
 	char TNAME[30];
 	char TDESC[50];
 	int priority;
@@ -29,16 +30,18 @@ typedef struct{
 int displayArray[MAX_TASKS][5];
 
 //Declaration of function prototypes.
-void printMenu();
+void printMenu(int counter);
+int createNewTask(task tasks[MAX_TASKS], int counter);
+int viewTaskList(task tasks[MAX_TASKS], int counter);
 
 main(){
-	int choice, counter = 0, count = 1;
+	int choice, counter = 0, count = 0;
 	task tasks[MAX_TASKS];
 
 	system("clear");
 
 	do{
-		printMenu();
+		printMenu(count);
 		printf("Enter choice: ");
 		scanf("%d", &choice);
 		switch(choice){
@@ -66,12 +69,12 @@ main(){
 	}while(choice != 5);
 }
 
-void printMenu(){
+void printMenu(int counter){
 	printf("ICS-OS To-Do List Manager");
 	putchar('\n');
 	printf("[1] Create New Task");
 	putchar('\n');
-	printf("[2] View Task List");
+	printf("[2] View Task List (%d)", counter);
 	putchar('\n');
 	printf("[3] Edit Task");
 	putchar('\n');
@@ -83,8 +86,9 @@ void printMenu(){
 
 int createNewTask(task tasks[MAX_TASKS], int counter){
 	counter++;
+	tasks[counter].TID = counter;
 	printf("Task name: ");
-	getchar();
+	gets(tasks[counter].TNAME);
 	gets(tasks[counter].TNAME);
 	printf("Task description: ");
 	gets(tasks[counter].TDESC);
@@ -93,6 +97,10 @@ int createNewTask(task tasks[MAX_TASKS], int counter){
 //	printf("Deadline: ");
 //	scanf("%d", &tasks[counter].deadline);
 
+	system("clear");
+	printf("New task created!\n");
+	sleep(1);
+	system("clear");
 	return counter;
 }
 
@@ -103,12 +111,19 @@ int viewTaskList(task tasks[MAX_TASKS], int counter){
 		printf("No task yet.\n");
 	}
 	else{
-		for(iTask = 1; iTask < counter; iTask++){
-			printf("\nTask ID: %d\n", iTask++);
-			printf("Task Name: %s\n", tasks[iTask++].TNAME);
-			printf("Task Description: %s\n", tasks[iTask++].TDESC);
-			printf("Task Priority: %d\n", tasks[iTask++].priority);
+		for(iTask = 0; iTask < counter; iTask++){
+//			iTask++;
+			printf("\nTask ID: %d\n", tasks[iTask+1].TID);
+			printf("Task Name: ");
+			puts(tasks[iTask+1].TNAME);
+			printf("Task Description: ");
+			puts(tasks[iTask+1].TDESC);
+			printf("Task Priority: %d\n", tasks[iTask+1].priority);
 //			printf("\nTask Deadline: %d\n", tasks[iTask++].deadline);
 		}
 	}
+
+	getchar();
+	getchar();
+	return 0;
 }
